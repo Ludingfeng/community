@@ -8,7 +8,8 @@
 [es中文社区](https://elasticsearch.cn/explore)   
 ### 工具
 [Git](https://git-scm.com/)   
-[Visual-paradigm](https://www.visual-paradigm.com/cn/)
+[Visual-paradigm](https://www.visual-paradigm.com/cn/)  
+[flyway](https://flywaydb.org/getstarted/firststeps/maven)
 ### sql脚本
 ```
 create table USER

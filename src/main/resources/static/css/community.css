@@ -1,0 +1,13 @@
+body{
+    background-image:url("https://elasticsearch.cn/static/css/default/img/bg.jpg");
+    background-repeat: repeat;
+}
+
+.main{
+    background-color: white;
+    margin: 30px;
+}
+.btn-publish{
+    float: right;
+    margin-bottom: 15px;
+}
