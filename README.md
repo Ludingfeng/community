@@ -9,3 +9,17 @@
 ### 工具
 [Git](https://git-scm.com/)   
 [Visual-paradigm](https://www.visual-paradigm.com/cn/)
+### sql脚本
+```
+create table USER
+(
+	ID int auto_increment,
+	ACCOUNT_ID VARCHAR(100),
+	NAME VARCHAR(50),
+	TOKEN CHAR(36),
+	GMT_CREATE BIGINT,
+	GMT_MODIFIED BIGINT,
+	constraint USER_PK
+		primary key (ID)
+);
+```
