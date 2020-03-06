@@ -1,4 +1,4 @@
-create table question
+create table QUESTION
 (
 	id int auto_increment,
 	title varchar(50),
@@ -10,6 +10,5 @@ create table question
 	view_count int,
 	like_count int,
 	tag varchar(256),
-	constraint table_name_pk
 		primary key (id)
 );
