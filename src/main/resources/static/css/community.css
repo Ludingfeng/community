@@ -1,21 +1,24 @@
-body{
-    background-image:url("https://elasticsearch.cn/static/css/default/img/bg.jpg");
+body {
+    background-image: url("https://elasticsearch.cn/static/css/default/img/bg.jpg");
     background-repeat: repeat;
 }
 
-.main{
+.main {
     background-color: white;
     margin: 30px;
 }
-.btn-publish{
+
+.btn-publish {
     float: right;
     margin-bottom: 15px;
 }
-.media-object{
+
+.media-object {
     width: 40px;
     height: 40px;
 }
-.text-desc{
+
+.text-desc {
     font-size: 12px;
     font-weight: normal;
     color: #999;

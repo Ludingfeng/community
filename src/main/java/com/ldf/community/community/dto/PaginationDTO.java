@@ -14,15 +14,15 @@ public class PaginationDTO {
     private boolean showEndPage;//是否展示跳转最后一页按钮
     private Integer currentPage;//当前页
     private List<Integer> pages;//当前显示的所有页码
+    private Integer totalPage;//总页数
 
     //设置分页
-    public void setPagination(Integer totalCount, Integer page, Integer size) {
+    public void setPagination(Integer totalPage, Integer page) {
+        this.totalPage = totalPage;
         this.currentPage = page;
 
-        Integer totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;//总页数
-
         pages = new LinkedList<>();
-        for (int i = Math.max(currentPage-3, 1); i <= Math.min(currentPage+3, totalPage); i++) {
+        for (int i = Math.max(currentPage - 3, 1); i <= Math.min(currentPage + 3, totalPage); i++) {
             pages.add(i);
         }
 
