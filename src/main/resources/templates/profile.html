@@ -18,13 +18,15 @@
             <hr>
             <div class="media" th:each="question:${paginationDTO.questions}">
                 <div class="media-left">
-                    <a href="#">
+                    <a>
                         <img class="media-object img-rounded"
                              th:src="${question.user.avatarUrl}">
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${question.title}"></h4>
+                    <a th:href="@{'/question/'+ ${question.id}}">
+                        <h4 class="media-heading" th:text="${question.title}"></h4>
+                    </a>
                     <span class="text-desc"><span th:text="${question.commentCount}"></span> 个回复 •
                         <span th:text="${question.viewCount}"></span> 次浏览 • <span
                                 th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span></span>
@@ -40,7 +42,8 @@
                     </li>
                     <!--跳转上一页-->
                     <li th:if="${paginationDTO.showPrevious}">
-                        <a th:href="@{'/profile/'+${section}(page=${paginationDTO.currentPage-1})}" aria-label="Previous">
+                        <a th:href="@{'/profile/'+${section}(page=${paginationDTO.currentPage-1})}"
+                           aria-label="Previous">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
