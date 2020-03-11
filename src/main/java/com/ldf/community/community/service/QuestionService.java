@@ -2,6 +2,9 @@ package com.ldf.community.community.service;
 
 import com.ldf.community.community.dto.PaginationDTO;
 import com.ldf.community.community.dto.QuestionDTO;
+import com.ldf.community.community.exception.CustomizeErrorCode;
+import com.ldf.community.community.exception.CustomizeException;
+import com.ldf.community.community.mapper.QuestionExtMapper;
 import com.ldf.community.community.mapper.QuestionMapper;
 import com.ldf.community.community.mapper.UserMapper;
 import com.ldf.community.community.model.Question;
@@ -22,12 +25,14 @@ public class QuestionService {
     private UserMapper userMapper;
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
 
     public PaginationDTO list(Integer page, Integer size) {
 
         PaginationDTO paginationDTO = new PaginationDTO();
-        Integer totalCount = (int)questionMapper.countByExample(new QuestionExample());//获取首页数据总条数
+        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());//获取首页数据总条数
 
         Integer totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;//总页数
 
@@ -53,11 +58,11 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public PaginationDTO list(Integer userId, Integer page, Integer size) {
+    public PaginationDTO list(Long userId, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
         QuestionExample example = new QuestionExample();
         example.createCriteria().andCreatorEqualTo(userId);
-        Integer totalCount = (int)questionMapper.countByExample(example);
+        Integer totalCount = (int) questionMapper.countByExample(example);
 
         Integer totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;//总页数
 
@@ -84,9 +89,13 @@ public class QuestionService {
         paginationDTO.setQuestions(questionDTOList);
         return paginationDTO;
     }
+
     //获取问题详细信息
-    public QuestionDTO getDetailById(Integer id) {
+    public QuestionDTO getDetailById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
+        if (question == null) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         User user = userMapper.selectByPrimaryKey(question.getCreator());
         QuestionDTO questionDTO = new QuestionDTO();
         questionDTO.setUser(user);
@@ -96,15 +105,25 @@ public class QuestionService {
 
     // 更新或创建问题
     public void createOrUpdate(Question question) {
-        if(question.getId()==null){
+        if (question.getId() == null) {
             // 创建问题
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
             questionMapper.insert(question);
-        }else{
+        } else {
             // 更新问题
             question.setGmtModified(System.currentTimeMillis());
-            questionMapper.updateByPrimaryKeySelective(question);
+            int result = questionMapper.updateByPrimaryKeySelective(question);
+            if(result!=1){
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
+    }
+    // 增加浏览数
+    public void incView(Long id){
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }

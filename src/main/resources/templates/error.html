@@ -10,15 +10,11 @@
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
 </head>
 <body>
-<div th:insert="~{navigation :: nav}"></div>
-<div>
-    <div class="row">
-        <div class="jumbotron">
-            <h1>出错啦！！！</h1>
-            <p th:text="${errorMessage}"></p>
-            <p><a class="btn btn-primary btn-lg" href="/" role="button">回到首页</a></p>
-        </div>
-    </div>
+<!--<div th:insert="~{navigation :: nav}"></div>-->
+<div class="jumbotron">
+    <h1>出错啦！！！</h1>
+    <p th:text="${errorMessage}"></p>
+    <p><a class="btn btn-primary btn-lg" href="/" role="button">回到首页</a></p>
 </div>
 </body>
 </html>
