@@ -3,20 +3,18 @@ package com.ldf.community.community.controller;
 import com.ldf.community.community.dto.CommentDTO;
 import com.ldf.community.community.dto.ResultDTO;
 import com.ldf.community.community.exception.CustomizeErrorCode;
-import com.ldf.community.community.exception.CustomizeException;
-import com.ldf.community.community.mapper.CommentMapper;
 import com.ldf.community.community.model.Comment;
 import com.ldf.community.community.model.User;
 import com.ldf.community.community.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 
 /**
  * 评论功能
@@ -28,12 +26,15 @@ public class CommentController {
     private CommentService commentService;
 
     @ResponseBody
-    @RequestMapping(value = "/comment",method = RequestMethod.POST)
+    @RequestMapping(value = "/comment", method = RequestMethod.POST)
     public Object post(@RequestBody CommentDTO commentDTO,
-                       HttpServletRequest request){
+                       HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
-        if(user==null){
+        if (user == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
+        }
+        if(commentDTO==null || StringUtils.isEmpty(commentDTO.getDescription().trim())){
+            return ResultDTO.errorOf(CustomizeErrorCode.COMMENT_IS_EMPTY);
         }
         Comment comment = new Comment();
         comment.setDescription(commentDTO.getDescription());

@@ -109,18 +109,22 @@ public class QuestionService {
             // 创建问题
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
+            question.setCommentCount(0);
+            question.setViewCount(0);
+            question.setLikeCount(0);
             questionMapper.insert(question);
         } else {
             // 更新问题
             question.setGmtModified(System.currentTimeMillis());
             int result = questionMapper.updateByPrimaryKeySelective(question);
-            if(result!=1){
+            if (result != 1) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
     }
+
     // 增加浏览数
-    public void incView(Long id){
+    public void incView(Long id) {
         Question question = new Question();
         question.setId(id);
         question.setViewCount(1);

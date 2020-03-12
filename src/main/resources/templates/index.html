@@ -9,6 +9,18 @@
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
 </head>
+<script type="application/javascript">
+    window.onload = function () {
+        // 判断是否从回复页面跳转登录
+        var item = window.localStorage.getItem("closable");
+        // 是，则跳转回回复页面，实现页面不刷新登录
+        console.log(item);
+        if (item == "true") {
+            window.close();
+            window.localStorage.removeItem("closable");
+        }
+    }
+</script>
 <body>
 <div th:insert="~{navigation :: nav}"></div>
 <div class="container-fluid main">

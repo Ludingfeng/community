@@ -3,7 +3,6 @@ package com.ldf.community.community.dto;
 import com.ldf.community.community.exception.CustomizeErrorCode;
 import com.ldf.community.community.exception.CustomizeException;
 import lombok.Data;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 服务器接收到客户端的评论对象后的响应对象
