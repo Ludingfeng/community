@@ -14,9 +14,11 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -45,7 +47,9 @@ public class QuestionService {
         paginationDTO.setPagination(totalPage, page);
 
         Integer offset = size * (page - 1);
-        List<Question> list = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.setOrderByClause("gmt_create desc");
+        List<Question> list = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : list) {
             User user = userMapper.selectByPrimaryKey(question.getCreator());
@@ -129,5 +133,24 @@ public class QuestionService {
         question.setId(id);
         question.setViewCount(1);
         questionExtMapper.incView(question);
+    }
+
+    // 通过标签获取相关问题列表
+    public List<QuestionDTO> selectRelatedQuestions(QuestionDTO queryDTO) {
+
+        if(StringUtils.isEmpty(queryDTO.getTag().trim())){
+            return new ArrayList<>();
+        }
+        String questionTags = queryDTO.getTag().replace(",", "|");
+        Question question = new Question();
+        question.setId(queryDTO.getId());
+        question.setTag(questionTags);
+        List<Question> relatedQuestions = questionExtMapper.selectRelatedQuestions(question);
+        List<QuestionDTO> relatedQuestionDTOs = relatedQuestions.stream().map(q -> {
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(q,questionDTO);
+            return questionDTO;
+        }).collect(Collectors.toList());
+        return relatedQuestionDTOs;
     }
 }

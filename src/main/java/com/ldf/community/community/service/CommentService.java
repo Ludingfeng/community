@@ -45,7 +45,7 @@ public class CommentService {
         }
         if (comment.getType() == CommentTypeEnum.COMMENT.getType()) {
             //回复评论
-            Comment dbComment = commentMapper.selectByPrimaryKey(comment.getId());
+            Comment dbComment = commentMapper.selectByPrimaryKey(comment.getParentId());
             if (dbComment == null) {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
@@ -62,12 +62,12 @@ public class CommentService {
         }
 
     }
-    // 获取评论列表数据
-    public List<CommentsDTO> listByQuestionId(Long id) {
+    // 获取一级二级评论列表数据
+    public List<CommentsDTO> listByTargetId(Long id, CommentTypeEnum type) {
 
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria().andParentIdEqualTo(id)
-                .andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+                .andTypeEqualTo(type.getType());
         // 评论按点赞数降序，评论时间降序排列
         commentExample.setOrderByClause("like_count desc,gmt_create desc");
         List<Comment> comments = commentMapper.selectByExample(commentExample);
