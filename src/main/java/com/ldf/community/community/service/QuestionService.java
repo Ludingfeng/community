@@ -30,12 +30,12 @@ public class QuestionService {
     @Autowired
     private QuestionExtMapper questionExtMapper;
 
-
+    // 首页获取数据分页
     public PaginationDTO list(Integer page, Integer size) {
 
         PaginationDTO paginationDTO = new PaginationDTO();
-        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());//获取首页数据总条数
-
+        //获取首页数据总条数
+        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
         Integer totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;//总页数
 
         if (page < 1) {
@@ -62,10 +62,13 @@ public class QuestionService {
         return paginationDTO;
     }
 
+    // 我的提问页获取数据分页
     public PaginationDTO list(Long userId, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
         QuestionExample example = new QuestionExample();
+        // 传入当前用户
         example.createCriteria().andCreatorEqualTo(userId);
+        //获取我的提问页数据总条数
         Integer totalCount = (int) questionMapper.countByExample(example);
 
         Integer totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;//总页数
@@ -94,15 +97,17 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    //获取问题详细信息
+    // 获取问题详细信息
     public QuestionDTO getDetailById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null) {
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
+        // 获取问题创建者
         User user = userMapper.selectByPrimaryKey(question.getCreator());
         QuestionDTO questionDTO = new QuestionDTO();
         questionDTO.setUser(user);
+        // 将question信息复制到questionDTO
         BeanUtils.copyProperties(question, questionDTO);
         return questionDTO;
     }
@@ -121,6 +126,7 @@ public class QuestionService {
             // 更新问题
             question.setGmtModified(System.currentTimeMillis());
             int result = questionMapper.updateByPrimaryKeySelective(question);
+            // 未更新成功，问题不存在
             if (result != 1) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }

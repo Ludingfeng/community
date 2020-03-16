@@ -1,7 +1,9 @@
 package com.ldf.community.community.controller;
 
+import com.ldf.community.community.dto.NotificationDTO;
 import com.ldf.community.community.dto.PaginationDTO;
 import com.ldf.community.community.model.User;
+import com.ldf.community.community.service.NotificationService;
 import com.ldf.community.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,8 @@ public class ProfileController {
 
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private NotificationService notificationService;
 
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable(name = "action") String action,
@@ -29,17 +33,20 @@ public class ProfileController {
         if (user == null) {
             return "redirect:/";
         }
-
+        // 我的提问
         if ("questions".equals(action)) {
             model.addAttribute("section", "questions");
             model.addAttribute("sectionName", "我的提问");
+            // 获取提问页列表返回给页面
+            PaginationDTO paginationDTO = questionService.list(user.getId(),page,size);
+            model.addAttribute("paginationDTO", paginationDTO);
+        // 最新回复
         } else if ("replies".equals(action)) {
             model.addAttribute("section", "replies");
             model.addAttribute("sectionName", "最新回复");
+            NotificationDTO notificationDTO = notificationService.list();
+            model.addAttribute("notificationDTO", notificationDTO);
         }
-
-        PaginationDTO paginationDTO = questionService.list(user.getId(),page,size);
-        model.addAttribute("paginationDTO", paginationDTO);
         return "profile";
     }
 

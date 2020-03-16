@@ -55,14 +55,6 @@ function submitComment(targetId, content, type) {
 /**
  * 展开二级评论
  */
-// function collapseComments(e) {
-//     var flag = $(e).attr("aria-expanded");
-//     // 二级评论展开式传递comment.id的值,用于后台获取数据
-//     if (flag=="false") {
-//         var id = e.getAttribute("data-id");
-//         console.log(id);
-//     }
-// }
 function collapseComments(e) {
     var flag = $(e).attr("aria-expanded");
     var comments = $("#comment-" + id);
@@ -110,6 +102,22 @@ function collapseComments(e) {
                 e.setAttribute("data-collapse", "in");
                 e.classList.add("active");
             });
+        }
+    }
+}
+
+function showSelectTag() {
+    $("#select-tag").show();
+}
+
+function selectTag(e) {
+    var value = e.getAttribute("data-tag");
+    var previous = $("#tag").val();
+    if (previous.indexOf(value) == -1) {
+        if (previous) {
+            $("#tag").val(previous + ',' + value);
+        } else {
+            $("#tag").val(value);
         }
     }
 }

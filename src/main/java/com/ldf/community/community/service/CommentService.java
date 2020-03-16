@@ -44,24 +44,27 @@ public class CommentService {
             throw new CustomizeException(CustomizeErrorCode.TYPE_PARAM_WRONG);
         }
         if (comment.getType() == CommentTypeEnum.COMMENT.getType()) {
-            //回复评论
+            // 回复评论
             Comment dbComment = commentMapper.selectByPrimaryKey(comment.getParentId());
+            // 回复的评论不存在
             if (dbComment == null) {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);
         } else {
-            //回复问题
+            // 回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
+            // 回复的问题不存在
             if (question == null) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
             commentMapper.insert(comment);
+            // 问题的回复数+1
             question.setCommentCount(1);
             questionExtMapper.incCommentCount(question);
         }
-
     }
+
     // 获取一级二级评论列表数据
     public List<CommentsDTO> listByTargetId(Long id, CommentTypeEnum type) {
 
