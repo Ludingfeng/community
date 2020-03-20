@@ -2,6 +2,7 @@ package com.ldf.community.community.service;
 
 import com.ldf.community.community.dto.PaginationDTO;
 import com.ldf.community.community.dto.QuestionDTO;
+import com.ldf.community.community.dto.QuestionQueryDTO;
 import com.ldf.community.community.exception.CustomizeErrorCode;
 import com.ldf.community.community.exception.CustomizeException;
 import com.ldf.community.community.mapper.QuestionExtMapper;
@@ -31,11 +32,16 @@ public class QuestionService {
     private QuestionExtMapper questionExtMapper;
 
     // 首页获取数据分页
-    public PaginationDTO list(Integer page, Integer size) {
+    public PaginationDTO list(String searchCon, Integer page, Integer size) {
 
         PaginationDTO paginationDTO = new PaginationDTO();
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        if (!StringUtils.isEmpty(searchCon)) {
+            String search = searchCon.replace(" ", "|");
+            questionQueryDTO.setSearch(search);
+        }
         //获取首页数据总条数
-        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
+        Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);
         Integer totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;//总页数
 
         if (page < 1) {
@@ -47,9 +53,11 @@ public class QuestionService {
         paginationDTO.setPagination(totalPage, page);
 
         Integer offset = size * (page - 1);
-        QuestionExample questionExample = new QuestionExample();
-        questionExample.setOrderByClause("gmt_create desc");
-        List<Question> list = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
+//        QuestionExample questionExample = new QuestionExample();
+//        questionExample.setOrderByClause("gmt_create desc");
+        questionQueryDTO.setSize(size);
+        questionQueryDTO.setPage(offset);
+        List<Question> list = questionExtMapper.selectBySearch(questionQueryDTO);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : list) {
             User user = userMapper.selectByPrimaryKey(question.getCreator());
@@ -58,7 +66,7 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        paginationDTO.setQuestions(questionDTOList);
+        paginationDTO.setData(questionDTOList);
         return paginationDTO;
     }
 
@@ -93,7 +101,7 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        paginationDTO.setQuestions(questionDTOList);
+        paginationDTO.setData(questionDTOList);
         return paginationDTO;
     }
 
@@ -144,7 +152,7 @@ public class QuestionService {
     // 通过标签获取相关问题列表
     public List<QuestionDTO> selectRelatedQuestions(QuestionDTO queryDTO) {
 
-        if(StringUtils.isEmpty(queryDTO.getTag().trim())){
+        if (StringUtils.isEmpty(queryDTO.getTag().trim())) {
             return new ArrayList<>();
         }
         String questionTags = queryDTO.getTag().replace(",", "|");
@@ -154,7 +162,7 @@ public class QuestionService {
         List<Question> relatedQuestions = questionExtMapper.selectRelatedQuestions(question);
         List<QuestionDTO> relatedQuestionDTOs = relatedQuestions.stream().map(q -> {
             QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(q,questionDTO);
+            BeanUtils.copyProperties(q, questionDTO);
             return questionDTO;
         }).collect(Collectors.toList());
         return relatedQuestionDTOs;

@@ -8,7 +8,9 @@
 [Github deploy key](https://developer.github.com/v3/guides/managing-deploy-keys/#deploy-keys)      
 [Github OAuth](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)    
 [es中文社区](https://elasticsearch.cn/explore)   
-[spring MVC](https://docs.spring.io/spring/docs/5.0.3.RELEASE/spring-framework-reference/web.html#spring-web)
+[spring MVC](https://docs.spring.io/spring/docs/5.0.3.RELEASE/spring-framework-reference/web.html#spring-web)   
+[markdown 富文本编译](http://editor.md.ipandao.com/)     
+[COS 腾讯云对象存储](https://cloud.tencent.com/document/product/436/10199)
 ### 工具
 [Git](https://git-scm.com/)   
 [Visual-paradigm](https://www.visual-paradigm.com/cn/)  

@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Data
-public class PaginationDTO {
-    private List<QuestionDTO> questions;
+public class PaginationDTO<T> {
+    private List<T> data;
     private boolean showPrevious;//是否展示上一页按钮
     private boolean showNext;//是否展示下一页按钮
     private boolean showFirstPage;//是否展示跳转第一页按钮

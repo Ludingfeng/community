@@ -1,14 +1,18 @@
 package com.ldf.community.community.dto;
 
-import com.ldf.community.community.model.Notification;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class NotificationDTO {
 
-    List<Notification> notifications;
-    private String questionTitle;
+    private Long id;
+    private Long gmtCreate;
+    private Integer status;
+    private Long notifier;
+    private String notifierName;
+    // 回复的问题标题
+    private String outerTitle;
+    // NotificationTypeEnum中的name
+    private String type;
 
 }

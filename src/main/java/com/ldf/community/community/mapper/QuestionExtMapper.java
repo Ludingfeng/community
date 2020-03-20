@@ -1,5 +1,6 @@
 package com.ldf.community.community.mapper;
 
+import com.ldf.community.community.dto.QuestionQueryDTO;
 import com.ldf.community.community.model.Question;
 import com.ldf.community.community.model.QuestionExample;
 import org.apache.ibatis.annotations.Param;
@@ -15,4 +16,7 @@ public interface QuestionExtMapper {
 
     List<Question> selectRelatedQuestions(Question question);
 
+    Integer countBySearch(QuestionQueryDTO questionQueryDTO);
+
+    List<Question> selectBySearch(QuestionQueryDTO questionQueryDTO);
 }

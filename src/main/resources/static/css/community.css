@@ -21,6 +21,11 @@ body {
     text-decoration-line: none;
 }
 
+.index-public-title {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
 .community-tag {
     text-decoration-line: none;
     cursor: pointer;
@@ -98,6 +103,23 @@ body {
     margin-bottom: 15px;
 }
 
+.badge-bgColor {
+    background-color: #2aabd2;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+.notification {
+    max-width: 40%;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: bottom;
+    text-overflow: ellipsis;
+}
+
 .jumbotron {
     text-align: center;
 }
@@ -159,6 +181,7 @@ body {
     text-decoration: none;
     color: #999;
 }
+
 .menu .add-point {
     cursor: pointer;
 }

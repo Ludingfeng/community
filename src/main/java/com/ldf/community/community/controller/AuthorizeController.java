@@ -6,6 +6,7 @@ import com.ldf.community.community.mapper.UserMapper;
 import com.ldf.community.community.model.User;
 import com.ldf.community.community.provider.GithubProvider;
 import com.ldf.community.community.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @Controller
+@Slf4j
 public class AuthorizeController {
 
     @Autowired
@@ -45,7 +47,7 @@ public class AuthorizeController {
         accessTokenDTO.setRedirect_uri(redirectUri);
         accessTokenDTO.setState(state);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
-        System.out.println("accessToken****"+accessToken);
+        System.out.println("accessToken****" + accessToken);
         GithubUser githubUser = githubProvider.getUser(accessToken);
         System.out.println(githubUser);
         if (githubUser != null && githubUser.getId() != null) {
@@ -57,9 +59,11 @@ public class AuthorizeController {
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setAvatarUrl(githubUser.getAvatar_url());
             userService.creatOrUpdate(user);
-            response.addCookie(new Cookie("token",token));
+            response.addCookie(new Cookie("token", token));
             return "redirect:/";
         } else {
+            // 打印错误日志
+            log.error("AuthorizeController->callback:get github error,{}", githubUser);
             //登录失败，重新登陆
             return "redirect:/";
         }
@@ -67,9 +71,9 @@ public class AuthorizeController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request,
-                         HttpServletResponse response){
+                         HttpServletResponse response) {
         request.getSession().removeAttribute("user");
-        Cookie cookie = new Cookie("token",null);
+        Cookie cookie = new Cookie("token", null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
         return "redirect:/";

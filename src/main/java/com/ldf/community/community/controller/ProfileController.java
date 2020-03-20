@@ -28,7 +28,7 @@ public class ProfileController {
                           HttpServletRequest request,
                           @RequestParam(name = "page", defaultValue = "1") Integer page,
                           @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        User user = (User)request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
 
         if (user == null) {
             return "redirect:/";
@@ -38,14 +38,18 @@ public class ProfileController {
             model.addAttribute("section", "questions");
             model.addAttribute("sectionName", "我的提问");
             // 获取提问页列表返回给页面
-            PaginationDTO paginationDTO = questionService.list(user.getId(),page,size);
+            PaginationDTO paginationDTO = questionService.list(user.getId(), page, size);
             model.addAttribute("paginationDTO", paginationDTO);
-        // 最新回复
+            // 最新回复
         } else if ("replies".equals(action)) {
             model.addAttribute("section", "replies");
             model.addAttribute("sectionName", "最新回复");
-            NotificationDTO notificationDTO = notificationService.list();
-            model.addAttribute("notificationDTO", notificationDTO);
+            // 获取未读通知内容
+            PaginationDTO paginationDTO = notificationService.list(user.getId(), page, size,0);
+            // 获取已读通知内容
+            PaginationDTO pagiDTO = notificationService.list(user.getId(), page, size,1);
+            model.addAttribute("paginationDTO", paginationDTO);
+            model.addAttribute("pagiDTO", pagiDTO);
         }
         return "profile";
     }
