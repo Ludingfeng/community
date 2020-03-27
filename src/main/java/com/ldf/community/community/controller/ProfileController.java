@@ -1,6 +1,5 @@
 package com.ldf.community.community.controller;
 
-import com.ldf.community.community.dto.NotificationDTO;
 import com.ldf.community.community.dto.PaginationDTO;
 import com.ldf.community.community.model.User;
 import com.ldf.community.community.service.NotificationService;
@@ -48,6 +47,7 @@ public class ProfileController {
             PaginationDTO paginationDTO = notificationService.list(user.getId(), page, size,0);
             // 获取已读通知内容
             PaginationDTO pagiDTO = notificationService.list(user.getId(), page, size,1);
+
             model.addAttribute("paginationDTO", paginationDTO);
             model.addAttribute("pagiDTO", pagiDTO);
         }

@@ -33,7 +33,7 @@ public class NotificationService {
         NotificationExample notificationExample = new NotificationExample();
         // 传入当前用户
         notificationExample.createCriteria().andReceiverEqualTo(userId);
-        //获取我的提问页数据总条数
+        //获取最新回复页数据总条数
         Integer totalCount = (int) notificationMapper.countByExample(notificationExample);
 
         Integer totalPage = totalCount % size == 0 ? totalCount / size : totalCount / size + 1;//总页数

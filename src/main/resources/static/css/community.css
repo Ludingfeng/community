@@ -1,10 +1,13 @@
 body {
-    background-color: #efefef;
+    background-image: url("../images/bg.jpg");
+    background-repeat: repeat;
 }
 
 .main {
     background-color: white;
-    margin: 30px;
+    width: 75%;
+    margin: auto;
+    border-radius: 5px;
 }
 
 .side {
@@ -22,7 +25,7 @@ body {
 }
 
 .index-public-title {
-    font-size: 24px;
+    font-size: 20px;
     margin-right: 10px;
 }
 
@@ -215,9 +218,33 @@ a:link {
     text-align: center;
     font-size: 12px;
     color: #666;;
-    padding: 0 0 15px 0;
+    padding: 40px 0 20px 0;
 }
 
 .red {
     color: red !important;
+}
+
+.index-questions {
+    padding: 15px 0;
+}
+
+.register-form {
+    margin: 5% 37% 0% 37%;
+    padding: 2%;
+    background-color: white;
+    border-radius: 4px;
+}
+
+.nav-title {
+    padding: 0 13%;
+}
+
+.login-reg-btn {
+    text-align: center;
+    padding: 2% 0;
+}
+
+.question-generator {
+    padding: 25px 0;
 }

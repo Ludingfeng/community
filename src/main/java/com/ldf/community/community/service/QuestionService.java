@@ -53,20 +53,10 @@ public class QuestionService {
         paginationDTO.setPagination(totalPage, page);
 
         Integer offset = size * (page - 1);
-//        QuestionExample questionExample = new QuestionExample();
-//        questionExample.setOrderByClause("gmt_create desc");
         questionQueryDTO.setSize(size);
         questionQueryDTO.setPage(offset);
         List<Question> list = questionExtMapper.selectBySearch(questionQueryDTO);
-        List<QuestionDTO> questionDTOList = new ArrayList<>();
-        for (Question question : list) {
-            User user = userMapper.selectByPrimaryKey(question.getCreator());
-            QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(question, questionDTO);
-            questionDTO.setUser(user);
-            questionDTOList.add(questionDTO);
-        }
-        paginationDTO.setData(questionDTOList);
+        generateQuestionDTO(paginationDTO, list);
         return paginationDTO;
     }
 
@@ -93,6 +83,11 @@ public class QuestionService {
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andCreatorEqualTo(userId);
         List<Question> list = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
+        generateQuestionDTO(paginationDTO, list);
+        return paginationDTO;
+    }
+
+    private void generateQuestionDTO(PaginationDTO paginationDTO, List<Question> list) {
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : list) {
             User user = userMapper.selectByPrimaryKey(question.getCreator());
@@ -102,7 +97,6 @@ public class QuestionService {
             questionDTOList.add(questionDTO);
         }
         paginationDTO.setData(questionDTOList);
-        return paginationDTO;
     }
 
     // 获取问题详细信息

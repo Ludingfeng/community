@@ -12,6 +12,7 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     NOTIFICATION_NOT_FOUND(2008,"读取的消息不存在或消息已被读取！"),
     NOTIFICATION_READ_FAIL(2009,"读取消息错误！"),
     FILE_UPLOAD_FAIL(2010,"图片上传失败！"),
+    REGISTER_FAIL(2011,"注册失败！未知错误！"),
     ;
 
     private String message;

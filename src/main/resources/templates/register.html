@@ -1,32 +1,66 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>注册</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
 </head>
 <body>
-<form>
-    <div class="form-group">
-        <label for="accountId">账号</label>
-        <input name="accountId" type="email" class="form-control" id="accountId" placeholder="请输入您的账号...">
+<div th:insert="~{navigation :: nav}"></div>
+<div class="alert alert-warning alert-dismissible fade in" role="alert"
+     th:if="${errorMessage!=null}" style="text-align: center">
+    <span th:text="${errorMessage}"></span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<!--登录-->
+<form action="/userLogin" method="post" th:if="${section=='login'}">
+    <div class="register-form">
+        <div>
+            <div class="form-group">
+                <label>用户名</label>
+                <input th:value="${username}" name="username" type="text" class="form-control" placeholder="请输入您的账号...">
+            </div>
+            <div class="form-group">
+                <label>密码</label>
+                <input th:value="${password}" name="password" type="password" class="form-control" placeholder="请输入您的密码...">
+            </div>
+            <div style="text-align: center;padding: 2% 0;">
+                <button type="submit" class="btn btn-default" href="/login">登陆</button>
+            </div>
+            <div style="text-align: center;padding: 4% 0 0 0;">
+                <span>第三方登录：</span>
+                <span>
+                    <a href="https://github.com/login/oauth/authorize?client_id=ffe0e41894e56ceedee9&redirect_uri=http://localhost:8887/callback&scope=user&state=1"
+                       type="button" class="btn btn-info btn-primary btn-xs">GitHub</a>
+                </span>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="password">密码</label>
-        <input name="password" type="password" class="form-control" id="password" placeholder="请输入您的密码...">
-    </div>
-    <div class="form-group">
-        <label for="exampleInputFile">头像</label>
-        <input type="file" id="exampleInputFile">
-        <p class="help-block">Example block-level help text here.</p>
-    </div>
-    <div class="checkbox">
-        <label>
-            <input type="checkbox"> Check me out
-        </label>
-    </div>
-    <button type="submit" class="btn btn-default">注册</button>
-    <button type="button" class="btn btn-default" href="/login">去登陆</button>
-    <button type="reset" class="btn btn-default">重置</button>
 </form>
+<!--注册-->
+<form action="/userRegister" method="post" th:if="${section=='register'}">
+    <div class="register-form">
+        <div>
+            <div class="form-group">
+                <label>用户名</label>
+                <input th:value="${username}" name="username" type="text" class="form-control" placeholder="请输入您的账号...">
+            </div>
+            <div class="form-group">
+                <label>密码</label>
+                <input th:value="${password}" name="password" type="password" class="form-control" placeholder="请输入您的密码...">
+            </div>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-default">注册</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div th:insert="~{footer :: foot}"></div>
 </body>
 </html>

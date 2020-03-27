@@ -14,6 +14,14 @@ public class IndexController {
     @Autowired
     private QuestionService questionService;
 
+    /**
+     * 分页
+     * @param model 视图
+     * @param page 当前页
+     * @param size 每页数据量
+     * @param search 搜索内容
+     * @return
+     */
     @GetMapping("/")
     public String index(Model model,
                         @RequestParam(name = "page", defaultValue = "1") Integer page,
@@ -24,11 +32,6 @@ public class IndexController {
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);
         return "index";
-    }
-
-    @GetMapping("/register")
-    public String reg() {
-        return "register";
     }
 
 }
